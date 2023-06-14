@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">PoojaStoreOwner</string>
+    <string name="add_record">ADD RECORD</string>
+    <string name="category_name">Category name</string>
+    <string name="item_name">Item name</string>
+    <string name="select_metrics">Select Metrics</string>
+    <string name="grams">Grams</string>
+    <string name="meters">Meters</string>
+    <string name="liters">Liters</string>
+    <string name="inches">Inches</string>
+    <string name="other">Other</string>
+    <string name="item_qty">Quantity</string>
+    <string name="item_price">Price (INR)</string>
+    <string name="add_unit">Add Unit</string>
+</resources>
