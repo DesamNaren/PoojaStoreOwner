@@ -37,6 +37,7 @@
                 android:textStyle="bold" />
 
             <ImageView
+                android:id="@+id/btnSubmit"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_gravity="center"

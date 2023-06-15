@@ -1,16 +1,18 @@
 package com.app.poojastoreowner
 
 import android.os.Bundle
-import android.util.Log
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 
-class RecordBottomSheetDialog(var unitList: MutableList<UnitItem>, var unitInterface: UnitInterface) : BottomSheetDialogFragment() {
+class RecordBottomSheetDialog(
+    var unitList: MutableList<UnitItem>,
+    var unitInterface: UnitInterface
+) : BottomSheetDialogFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,11 +26,46 @@ class RecordBottomSheetDialog(var unitList: MutableList<UnitItem>, var unitInter
         val price = view.findViewById<TextInputEditText>(R.id.priceEditText)
 
         algoButton.setOnClickListener {
-            unitInterface.addUnit(UnitItem(1, metrics.text.toString(), price.text.toString(), true))
-            dismiss()
+            val isValid = checkRecordValidations(metrics.text.toString(), price.text.toString())
+            if (isValid) {
+                //show alert and return
+                checkForRecordExist(
+                    UnitItem(
+                        1,
+                        metrics.text.toString().trim(),
+                        price.text.toString(),
+                        true
+                    )
+                )
+                dismiss()
+            }
+
+
         }
 
         return view
+    }
+
+    private fun checkRecordValidations(metrics: String?, price: String?): Boolean {
+        if (metrics == null || TextUtils.isEmpty(metrics) || metrics.toInt() == 0) return false
+        if (price == null || TextUtils.isEmpty(metrics) || price.toDouble() == 0.0) return false
+        return true
+    }
+
+
+    private fun checkForRecordExist(unitItem: UnitItem) {
+        val metricsPredicate = unitList.filter {
+            it.unitQty?.toInt() == unitItem.unitQty?.toInt()
+        }
+        if (metricsPredicate.isNotEmpty()) {
+            unitList.remove(metricsPredicate[0])
+        }
+        unitList.add(unitItem)
+        sortByUnitQty()
+    }
+
+    private fun sortByUnitQty() {
+        unitList.sortBy { it.unitQty?.toInt() }
     }
 }
 
