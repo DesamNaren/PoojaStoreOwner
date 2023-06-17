@@ -2,7 +2,6 @@ package com.app.poojastoreowner
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
@@ -10,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 
 class MainActivity : AppCompatActivity(), UnitInterface {
 
@@ -35,22 +33,17 @@ class MainActivity : AppCompatActivity(), UnitInterface {
         val openBottomSheet = findViewById<MovableFloatingActionButton>(R.id.addRecord)
 
         openBottomSheet.setOnClickListener {
-            val bottomSheet = RecordBottomSheetDialog(unitList, this@MainActivity)
+            val bottomSheet = RecordBottomSheetDialog(this@MainActivity)
             bottomSheet.show(supportFragmentManager, "ModalBottomSheet")
         }
 
-//        val unitItem = UnitItem(unitIdCount++, "", "", false)
-//        unitList.add(unitItem)
-        unitAdapter = UnitAdapter(unitList, this)
         setUnitAdapter()
-
-//        addRecord()
 
         btnSubmit.setOnClickListener {
             val isRecordExist = checkForMinimumRecords()
-            if(isRecordExist){
-               // submit record
-            }else{
+            if (isRecordExist) {
+                // submit record
+            } else {
                 //add at-least one record
             }
         }
@@ -65,6 +58,7 @@ class MainActivity : AppCompatActivity(), UnitInterface {
 
 
     private fun setUnitAdapter() {
+        unitAdapter = UnitAdapter(unitList, this)
         unitsRecyclerView.layoutManager = LinearLayoutManager(this)
         unitsRecyclerView.adapter = unitAdapter
         unitsRecyclerView.addItemDecoration(
@@ -76,37 +70,30 @@ class MainActivity : AppCompatActivity(), UnitInterface {
 
     }
 
-    override fun addUnit(unitItem: UnitItem) {
-        unitList.add(unitItem)
-        unitAdapter.notifyDataSetChanged()
-
-        if (unitList.size > 0) {
-            title.visibility = View.VISIBLE
-        } else {
-            title.visibility = View.GONE
-
-        }
-    }
-
-    override fun removeUnit(unitItem: UnitItem) {
+    override fun removeUnit(unitItem: UnitItem, position: Int) {
         unitList.remove(unitItem)
-        unitAdapter.notifyDataSetChanged()
-
-        if (unitList.size > 0) {
-            title.visibility = View.VISIBLE
-        } else {
-            title.visibility = View.GONE
-
-        }
+        unitAdapter.notifyItemRemoved(position)
     }
 
-    override fun updateUnit(unitItem: UnitItem) {
+    override fun updateUnit(unitItem: UnitItem, position: Int) {
+        val metricsPredicate = unitList.filter {
+            it.unitQty?.toInt() == unitItem.unitQty?.toInt()
+        }
+        if (metricsPredicate.isNotEmpty()) {
+            unitList.remove(metricsPredicate[0])
+        }
+        unitList.add(unitItem)
+        sortByUnitQty()
+        unitAdapter.notifyDataSetChanged()
+    }
 
+
+    private fun sortByUnitQty() {
+        unitList.sortBy { it.unitQty?.toInt() }
     }
 }
 
 interface UnitInterface {
-    fun addUnit(unitItem: UnitItem)
-    fun removeUnit(unitItem: UnitItem)
-    fun updateUnit(unitItem: UnitItem)
+    fun removeUnit(unitItem: UnitItem, position: Int)
+    fun updateUnit(unitItem: UnitItem, position: Int = -1)
 }

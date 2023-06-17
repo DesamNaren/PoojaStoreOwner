@@ -10,8 +10,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 
 class RecordBottomSheetDialog(
-    var unitList: MutableList<UnitItem>,
-    var unitInterface: UnitInterface
+    private var unitInterface: UnitInterface
 ) : BottomSheetDialogFragment() {
 
     override fun onCreateView(
@@ -39,8 +38,6 @@ class RecordBottomSheetDialog(
                 )
                 dismiss()
             }
-
-
         }
 
         return view
@@ -52,20 +49,8 @@ class RecordBottomSheetDialog(
         return true
     }
 
-
     private fun checkForRecordExist(unitItem: UnitItem) {
-        val metricsPredicate = unitList.filter {
-            it.unitQty?.toInt() == unitItem.unitQty?.toInt()
-        }
-        if (metricsPredicate.isNotEmpty()) {
-            unitList.remove(metricsPredicate[0])
-        }
-        unitList.add(unitItem)
-        sortByUnitQty()
-    }
-
-    private fun sortByUnitQty() {
-        unitList.sortBy { it.unitQty?.toInt() }
+        unitInterface.updateUnit(unitItem)
     }
 }
 
