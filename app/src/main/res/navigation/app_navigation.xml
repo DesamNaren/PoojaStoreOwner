@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_navigation"
+    app:startDestination="@id/categoriesFragment">
+
+    <fragment
+        android:id="@+id/categoriesFragment"
+        android:name="com.app.poojastoreowner.CategoriesFragment"
+        android:label="fragment_add_category"
+        tools:layout="@layout/fragment_categories">
+        <action
+            android:id="@+id/action_addCategoryFragment_to_categoryBottomSheetDialog"
+            app:destination="@id/categoryBottomSheetDialog" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/categoryBottomSheetDialog"
+        android:name="com.app.poojastoreowner.CategoryBottomSheetDialog"
+        android:label="fragment_add_category"
+        tools:layout="@layout/add_category_layout" />
+
+    <fragment
+        android:id="@+id/addProductFragment"
+        android:name="com.app.poojastoreowner.AddProductFragment"
+        android:label="fragment_add_product"
+        tools:layout="@layout/fragment_add_product" />
+
+</navigation>
