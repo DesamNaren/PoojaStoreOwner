@@ -36,14 +36,12 @@ class CategoriesFragment : Fragment(), UnitInterface {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_categories, container, false)
         binding.addRecord.setOnClickListener {
             val bottomSheetDialog = CategoryBottomSheetDialog.newInstance(this)
             bottomSheetDialog.show(requireActivity().supportFragmentManager, "ModalBottomSheet")
-//          Navigation.findNavController(it)
-//                .navigate(R.id.action_addCategoryFragment_to_categoryBottomSheetDialog)
         }
         return binding.root
     }

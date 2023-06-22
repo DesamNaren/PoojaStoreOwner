@@ -70,6 +70,7 @@
            android:layout_height="wrap_content"/>
 
        <androidx.appcompat.widget.AppCompatImageView
+           android:id="@+id/imageView"
            android:padding="8dp"
            android:src="@android:drawable/ic_menu_report_image"
            android:layout_width="120dp"
